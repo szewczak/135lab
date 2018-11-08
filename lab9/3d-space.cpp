@@ -41,7 +41,7 @@ public:
     double z;
 };
 double length(Coord3D *p){
-    return (sqrt(pow(*p.x,2) + pow(*p.y,2) + pow(*p.z,2)));
+    return (sqrt(pow((*p).x,2) + pow((*p).y,2) + pow((*p).z,2)));
 }
 
 int main(){
@@ -49,6 +49,6 @@ int main(){
     test.x = 1;
     test.y = 2;
     test.z = 3;
-    cout << length(test) << endl;
+    cout << length(&test) << endl;
     return 0;
 }
