@@ -2,31 +2,30 @@
 Author: Nick Szewczak
 Course: CSCI-136
 Instructor: Subhadarshi Panda
-Assignment: Lab9 Task A. Length and distance in 3D space
-A point in 3D space can be represented using three coordinates. In Cartesian coordinate system these coordinates are called (x,y,z), describing the position of the point along the three orthogonal axes: [img missing]
-The origin of the coordinate system is denoted by O and has coordinates (0,0,0).
-A point P=(x,y,z), together with the origin, defines a 3D vector OP. The distance from O to P, or in other words, the length of the vector OP can be computed using the euclidean distance formula:
-                           _______________
-Length of the vector OP = √x^2 + y^2 + z^2
+Assignment: Lab9 B. Farther from the origin?
+In the same file 3d-space.cpp, add a function
 
-We are provided with a struct type that represents coordinates in 3D:
+Coord3D * fartherFromOrigin(Coord3D *p1, Coord3D *p2);
+Which receives the coordinates of two points (passed as pointers),and
+returns the pointer of the point that is farther away from the origin.
 
-class Coord3D {
-public:
-    double x;
-    double y;
-    double z;
-};
-Write a program 3d-space.cpp, in which you define a function length that receives the coordinates of a point P passed as a pointer, and computes the distance from the origin to the point P:
-
-double length(Coord3D *p);
 A usage example:
 
 int main() {
     Coord3D pointP = {10, 20, 30};
-    cout << length(&pointP) << endl; // would print 37.4166
+    Coord3D pointQ = {-20, 21, -22};
+
+    cout << "Address of P: " << &pointP << endl;
+    cout << "Address of Q: " << &pointQ << endl << endl;
+
+    Coord3D * ans = fartherFromOrigin(&pointP, &pointQ);
+   
+    cout << "ans = " << ans << endl; // So which point is farther?
 }
-Notice that we pass the memory address &pointP, where the struct object is located. The function should dereference this address to get the corresponding fields x, y, and z for computing the length.
+When testing your code, look at the reported address of the answer ans
+and determine whether it reports P or Q. You can use a calculator or
+WolframAlpha) to check the numbers. Try other coordinates of points P
+and Q to confirm that the program works.
 */
 
 #include <iostream>
