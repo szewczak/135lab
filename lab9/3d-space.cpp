@@ -12,6 +12,7 @@ Length of the vector OP = √x^2 + y^2 + z^2
 We are provided with a struct type that represents coordinates in 3D:
 
 class Coord3D {
+public:
     double x;
     double y;
     double z;
