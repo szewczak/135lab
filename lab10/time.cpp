@@ -84,6 +84,9 @@ void printTimeSlot(TimeSlot ts){
     cout << theEndTimes.h << ":" << theEndTimes.m << "]\n";
 }
 
+TimeSlot scheduleAfter(TimeSlot ts, Movie nextMovie){
+    return TimeSlot {nextMovie, addMinutes(ts.startTime, ts.movie.duration)};
+}
 int main(){
     return 0;
 }
