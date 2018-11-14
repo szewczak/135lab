@@ -2,17 +2,18 @@
 Author: Nick Szewczak
 Course: CSCI-136
 Instructor: Subhadarshi Panda
-Assignment: LAB 10 Task B. Making it more interesting
-Add a new function to your program time.cpp:
+Assignment: LAB 10 Task D. Scheduling X after Y?
+Add a new function
 
-Time addMinutes(Time time0, int min);
-The function should create and return a new moment of time that is min minutes after time0. Example:
+TimeSlot scheduleAfter(TimeSlot ts, Movie nextMovie);
+The function should produce and return a new TimeSlot for the
+movie nextMovie, scheduled immediately after the time slot ts.
 
-addMinutes({8, 10}, 75)
-// ==> should return {9, 25}
-(We will not test how your function behaves if the new returned time will be on the next day, feel free to assume that it will remain withing the same day, ≤ 23:59.)
+For example, if the movie scheduled in ts starts at 14:10 and
+lasts 120 minutes, then the time slot for the next movie
+should start at exactly 16:10.
 
-Adjust the main function for testing this function. Feel free to add additional tests to check the correctness of your code.
+Modify main function to test your code.
 */
 
 #include <iostream>
@@ -47,8 +48,42 @@ Time addMinutes(Time time0, int min){
     time0.m = totalmins%60;
     return time0; 
 }
+enum Genre {ACTION, COMEDY, DRAMA, ROMANCE, THRILLER};
+
+class Movie { 
+public: 
+    string title;
+    Genre genre;     // only one genre per movie
+    int duration;    // in minutes
+};
+
+class TimeSlot { 
+public: 
+    Movie movie;     // what movie
+    Time startTime;  // when it starts
+};
+
+
+void printMovie(Movie mv){
+    string g;
+    switch (mv.genre) {
+        case ACTION   : g = "ACTION"; break;
+        case COMEDY   : g = "COMEDY"; break;
+        case DRAMA    : g = "DRAMA";  break;
+        case ROMANCE  : g = "ROMANCE"; break;
+        case THRILLER : g = "THRILLER"; break;
+    }
+    cout << mv.title << " " << g << " (" << mv.duration << " min)";
+}
+
+void printTimeSlot(TimeSlot ts){
+    // Back to the Future COMEDY (116 min) [starts at 9:15, ends by 11:11]
+    printMovie(ts.movie);
+    cout << " [starts at " << ts.startTime.h << ":" << ts.startTime.m << ", ends by ";
+    Time theEndTimes = addMinutes(ts.startTime,ts.movie.duration);
+    cout << theEndTimes.h << ":" << theEndTimes.m << "]\n";
+}
 
 int main(){
-    
     return 0;
 }
