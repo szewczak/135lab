@@ -2,34 +2,17 @@
 Author: Nick Szewczak
 Course: CSCI-136
 Instructor: Subhadarshi Panda
-Assignment: LAB 10 A. Simple functions for time
-Create a new program time.cpp. (Copy the class Time declaration in your
-program, it should be placed before main() function.)
+Assignment: LAB 10 Task B. Making it more interesting
+Add a new function to your program time.cpp:
 
-Implement two new functions:
+Time addMinutes(Time time0, int min);
+The function should create and return a new moment of time that is min minutes after time0. Example:
 
-    int minutesSinceMidnight(Time time);
-    int minutesUntil(Time earlier, Time later);
-The first function should return the number of minutes from 0:00AM until time.
+addMinutes({8, 10}, 75)
+// ==> should return {9, 25}
+(We will not test how your function behaves if the new returned time will be on the next day, feel free to assume that it will remain withing the same day, ≤ 23:59.)
 
-The second function should receive two Time arguments earlier and later and
-report how many minutes separate the two moments. For example, when passing
-10:30AM and 1:40PM:
-
-    minutesUntil( {10, 30}, {13, 40} )  
-// ==> should return 190 minutes
-(A caveat: If the earlier moment of time happens to be after the later moment
-of time, report a negative number of minutes. Although it’s not difficult to
-achieve this if your implementation for the first function is correct.)
-
-For testing purposes, implement a simple user interface:
-
-    $ ./time
-    Enter first time:  10 30
-    Enter second time: 13 40
-
-These moments of time are X and Y minutes after midnight.
-The interval between them is Z minutes.
+Adjust the main function for testing this function. Feel free to add additional tests to check the correctness of your code.
 */
 
 #include <iostream>
@@ -58,6 +41,12 @@ int minutesUntil(Time earlier, Time later){
     return end-start;
 }
 
+Time addMinutes(Time time0, int min){
+    int totalmins = 60*time0.h + time0.m + min;
+    time0.h = totalmins/60;
+    time0.m = totalmins%60;
+    return time0; 
+}
 
 int main(){
     
