@@ -2,52 +2,94 @@
     Author: Nick Szewczak
     Course: CSCI-136
     Instructor: Subhadarshi Panda
-    Assignment: Lab 11 Task D. Is string alphanumeric?
-        In the same program, add a new function
+    Assignment: Lab 11 Task E. Nested parentheses
+        Add a new function
 
-        bool isAlphanumeric(string s);
-        which returns true if all characters in the string are letters and 
-        digits, otherwise returns false.
+        bool nestedParens(string s);
+        which returns true if the string is a sequence of nested 
+        parentheses:
+
+        Strings "", "()", "(())", "((()))" … are all correct sequences 
+        and should return true. Any other symbols or mismatching 
+        parenthesis should make the function return false.
 
         A usage example:
 
-        cout << isAlphanumeric("ABCD") << endl;        // true (1)
-        cout << isAlphanumeric("Abcd1234xyz") << endl; // true (1)
-        cout << isAlphanumeric("KLMN 8-7-6") << endl;  // false (0)
-        The logic is similar to the sumRange function:
+            cout << nestedParens("((()))") << endl;      // true (1)
+            cout << nestedParens("()") << endl;          // true (1)
+            cout << nestedParens("") << endl;            // true (1)
 
-        if the sting is empty, return true.
-        Otherwise,
-        check the first character, and
-        check that the rest of the string is alphanumeric.
-        You may use the string function substr(pos, len), which extracts 
-        a substring. It takes two parameters, the starting position and 
-        the length of the substring. For example:
-
-        string msg = "ABCDEFGH";
-        cout << msg.substr(2, 4);   // CDEF (start at char [2] and
-                                    //       take 4 characters)
-*/
+            cout << nestedParens("(((") << endl;         // false (0)
+            cout << nestedParens("(()") << endl;         // false (0)
+            cout << nestedParens(")(") << endl;          // false (0)
+            cout << nestedParens("a(b)c") << endl;       // false (0)
+    */
 
 #include <iostream>
 #include <string>
 
 using namespace std;
 
-bool isAlphanumericWPointer(string s, int index){
-    if(index < s.length()){
-        bool CharAtIndex = isalnum(s.at(index));
-        // if(CharAtIndex){
-        //     cout << s.at(index) << " - Alpha Numeric\n";
-        // }
-        // else{
-        //     cout << s.at(index) << " - Other TYPE\n";
-        // }
-        return (CharAtIndex & isAlphanumericWPointer(s,index+1));
+// int nestedParensWithIndex(string s, int i, int depth){
+//     if(i < s.length()){
+//         if (s.at(i) == '('){
+//             depth++;
+//         }
+//         if (s.at(i) == ')'){
+//             depth--;
+//         }
+//         return nestedParensWithIndex(s, i+1, depth);
+//     }
+//     else return 0;
+// }
+
+// bool onlyParens(string s, int i){
+//     if(i < s.length()){
+//         return ( (s.at(i) == '(' | s.at(i) == ')') & onlyParens(s, i+1));
+//     }
+//     else return true;
+// }
+
+// bool nestedParens(string s){
+//     if(onlyParens(s,0) & nestedParensWithIndex(s,0,0) == 0){
+//         return true;
+//     }
+//     else return false;
+// }
+
+bool nestedParensWithIndex(string s, int i){
+    if(i < (s.length()/2)){
+        // clog << i << " is less than " << s.length()/2 << endl;
+        if(s.at(i) == '(' && s.at(s.length()-1-i) == ')'){
+            // clog << "flanked by (  ) \n";
+            return nestedParensWithIndex(s, i+1);
+        }
+        else return false;
     }
     else return true;
 }
 
+bool nestedParens(string s){
+    if(s.length()%2 == 0){
+        // clog << "equal length stirng\n";
+        return nestedParensWithIndex(s, 0);
+    }
+    else return false;
+}
+
+bool isAlphanumericWPointer(string s, int i){
+    if(i < s.length()){
+        bool CharAti = isalnum(s.at(i));
+        // if(CharAti){
+        //     cout << s.at(i) << " - Alpha Numeric\n";
+        // }
+        // else{
+        //     cout << s.at(i) << " - Other TYPE\n";
+        // }
+        return (CharAti & isAlphanumericWPointer(s,i+1));
+    }
+    else return true;
+}
 bool isAlphanumeric(string s){
     return isAlphanumericWPointer(s, 0);
 }
@@ -81,9 +123,10 @@ void printRange(int left, int right){
 }
 
 int main(){
-    // string String = "Helloworld";
-    // if(isAlphanumeric(String)){
-    //     cout << "\nTRUE\n";
-    // }
+    string String = "())(()))";
+    if(nestedParens(String)){
+        cout << "true\n";
+    }
+
     return 0;
 }
