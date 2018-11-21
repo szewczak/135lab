@@ -2,51 +2,55 @@
     Author: Nick Szewczak
     Course: CSCI-136
     Instructor: Subhadarshi Panda
-    Assignment: Lab 11 Task C. Sum of elements in array
+    Assignment: Lab 11 Task D. Is string alphanumeric?
         In the same program, add a new function
 
-        int sumArray(int *arr, int size);
-        which receives an array (as a pointer to its first element) and the size of the array, and should return the sum of its elements. The function itself should not do any new dynamic memory allocations.
+        bool isAlphanumeric(string s);
+        which returns true if all characters in the string are letters and 
+        digits, otherwise returns false.
 
-        There are several approaches to this task:
-
-        One possible strategy is to define a helper function
-        sumArrayInRange(int *arr, int left, int right);
-        which adds up all elements of the passed array, but only for indexes in the interval left ≤ i ≤ right. It can be implemented very similarly to the function sumRange, but it should be adding the elements of the array instead of range indices. 
-        Then sumArray(arr, size) can be defined as 
-        sumArrayInRange(arr, 0, size-1).
-
-        Alternatively, can you maybe get away with just using the original function?
         A usage example:
 
-        int main() {
+        cout << isAlphanumeric("ABCD") << endl;        // true (1)
+        cout << isAlphanumeric("Abcd1234xyz") << endl; // true (1)
+        cout << isAlphanumeric("KLMN 8-7-6") << endl;  // false (0)
+        The logic is similar to the sumRange function:
 
-            int size = 10;
-            int *arr = new int[size]; // allocate array dynamically
-            arr[0] = 12;
-            arr[1] = 17;
-            arr[2] = -5;
-            arr[3] = 3;
-            arr[4] = 7;
-            arr[5] = -15;
-            arr[6] = 27;
-            arr[7] = 5;
-            arr[8] = 13;
-            arr[9] = -21;
+        if the sting is empty, return true.
+        Otherwise,
+        check the first character, and
+        check that the rest of the string is alphanumeric.
+        You may use the string function substr(pos, len), which extracts 
+        a substring. It takes two parameters, the starting position and 
+        the length of the substring. For example:
 
-            int sum1 = sumArray(arr, size); // Add all elements
-            cout << "Sum is " << sum1 << endl;  // Sum is 43
-            
-            int sum2 = sumArray(arr, 5); // Add up first five elements
-            cout << "Sum is " << sum2 << endl;  // Sum is 34
-
-            delete[] arr;         // deallocate it
-        }
+        string msg = "ABCDEFGH";
+        cout << msg.substr(2, 4);   // CDEF (start at char [2] and
+                                    //       take 4 characters)
 */
 
 #include <iostream>
+#include <string>
 
 using namespace std;
+
+bool isAlphanumericWPointer(string s, int index){
+    if(index < s.length()){
+        bool CharAtIndex = isalnum(s.at(index));
+        // if(CharAtIndex){
+        //     cout << s.at(index) << " - Alpha Numeric\n";
+        // }
+        // else{
+        //     cout << s.at(index) << " - Other TYPE\n";
+        // }
+        return (CharAtIndex & isAlphanumericWPointer(s,index+1));
+    }
+    else return true;
+}
+
+bool isAlphanumeric(string s){
+    return isAlphanumericWPointer(s, 0);
+}
 
 int sumArrayWIndex(int *arr, int i, int size){
     if(i < size){
@@ -77,6 +81,9 @@ void printRange(int left, int right){
 }
 
 int main(){
-    cout << sumRange(-2,10) << endl;
+    // string String = "Helloworld";
+    // if(isAlphanumeric(String)){
+    //     cout << "\nTRUE\n";
+    // }
     return 0;
 }
