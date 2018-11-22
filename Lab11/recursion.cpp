@@ -37,31 +37,28 @@ int sumArray(int *arr, int size){
     return sumArrayWIndex(arr, 0, size);
 }
 
-bool walkThroughDivision(int *prices, int index, int size, int lsum, int rsum){
-    if(index < size){
-        clog << lsum << " : : " << rsum << endl;
-        clog << "considering index " << index << "\t\'" << prices[index] << "\'" << endl;
-        lsum = lsum + prices[index];
-        rsum = rsum - prices[index];
-        clog << "leftsum: " << lsum << "\trightsum: " << rsum << endl;
-        if(lsum > rsum){
-            return false;    //we have passed the half way mark
-        }
-        if(lsum == rsum){
-            return true;     //we are at a fair split
-        }
-        else{
-            return walkThroughDivision(prices, index+1, size, lsum, rsum);
-        }
-
+bool walkThroughDivision(
+    int  *prices,   // original array
+    int  i,         // position in original array
+    int  size,      // size of original array
+    int  aSum,      // 'left'  sum
+    int  bSum       // 'right' sum
+    ){
+    if(i < size){
+        // adding price[i] two both tree branches
+        return (
+            walkThroughDivision(prices,i+1,size,aSum+prices[i],bSum)
+            ||
+            walkThroughDivision(prices,i+1,size,aSum,bSum+prices[i])
+            );
     }
-    else return false;
+    else{
+        return (aSum == bSum);
+    }
 }
 
 bool divisible(int *prices, int size){
-    int max = sumArray(prices, size);
-    clog << "total" << max << endl;
-    return walkThroughDivision(prices, 0, size, 0, max);
+    return walkThroughDivision(prices, 0, size, 0, 0);
 }
 
 bool nestedParensWithIndex(string s, int i){
@@ -123,7 +120,7 @@ void printRange(int left, int right){
 }
 
 int main(){
-    int myarray [4] = {4, 3, 2, 1};
+    int myarray [4] = {4, 3, 2, 2};
     if(divisible(myarray, 4)){
         cout << "true\n";
     }
