@@ -45,7 +45,7 @@ bool walkThroughDivision(
     int  bSum       // 'right' sum
     ){
     if(i < size){
-        // adding price[i] two both tree branches
+        // adding price[i] to both tree branches
         return (
             walkThroughDivision(prices,i+1,size,aSum+prices[i],bSum)
             ||
